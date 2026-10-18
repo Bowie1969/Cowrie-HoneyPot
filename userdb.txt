@@ -1,0 +1,61 @@
+# Cowrie userdb - credentials the honeypot will ACCEPT (i.e. let the attacker in).
+# Format: username:x:password   (field 2 is unused by Cowrie)
+# All values are fabricated. These mirror the top SSH brute-force credentials so
+# that real bots "succeed" and move on to running commands / dropping payloads,
+# which is where the useful intelligence is.
+#
+# Any password NOT listed here still gets logged as a failed login, so we capture
+# the attacker's whole credential list either way.
+
+root:x:toor
+root:x:root
+root:x:123456
+root:x:123456789
+root:x:12345678
+root:x:password
+root:x:admin
+root:x:root123
+root:x:toor123
+root:x:qwerty
+root:x:1q2w3e4r
+root:x:passw0rd
+root:x:111111
+root:x:letmein
+root:x:dragon
+root:x:changeme
+root:x:abc123
+admin:x:admin
+admin:x:admin123
+admin:x:password
+admin:x:admin@123
+ubuntu:x:ubuntu
+ubuntu:x:password
+ubuntu:x:ubuntu123
+debian:x:debian
+debian:x:password
+oracle:x:oracle
+postgres:x:postgres
+postgres:x:postgres123
+mysql:x:mysql
+mysql:x:password
+git:x:git
+git:x:password
+deploy:x:deploy
+deploy:x:deploy123
+deploy:x:password
+backup:x:backup
+backup:x:backup123
+webapp:x:webapp
+webapp:x:webapp123
+test:x:test
+test:x:test123
+test:x:password
+guest:x:guest
+user:x:user
+user:x:123456
+user:x:password
+pi:x:raspberry
+vagrant:x:vagrant
+jenkins:x:jenkins
+tomcat:x:tomcat
+www-data:x:www-data

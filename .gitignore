@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+cowrie-env/
+
+# Built honeypot artifacts
+*.pickle
+*.pickle.*
+
+# Honeypot logs (live attack data — never committed)
+cowrie.json
+cowrie.log
+*.log
+log/
+
+# Generated output
+leaderboard.md
+
+# OS / editor noise
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Secrets (defense in depth — there are none in-tree, but never commit these)
+*.pem
+id_*
+!id_*.pub
+*.key
+.env

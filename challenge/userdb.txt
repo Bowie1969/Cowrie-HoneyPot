@@ -1,0 +1,23 @@
+# Cowrie challenge userdb - credentials the challenge instance will ACCEPT.
+# Format: username:x:password   (field 2 is unused). Keep this file ASCII.
+#
+# Intended path for players (documented in CHALLENGE.md):
+#   ctf:ctf          -> guest entry (given in the challenge description)
+#   deploy:deploy123 -> reach /home/deploy
+#   root:toor        -> reach /root (flag 3 + 4)
+# Brute-forcing the box instead of guessing defaults is deliberately NOISY and
+# is scored as detection events, so clean guessing beats spraying.
+#
+# All values are fabricated.
+
+ctf:x:ctf
+guest:x:guest
+admin:x:admin123
+deploy:x:deploy123
+webapp:x:webapp123
+backup:x:backup123
+test:x:test
+root:x:toor
+root:x:root
+root:x:password
+root:x:123456

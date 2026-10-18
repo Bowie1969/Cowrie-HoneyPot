@@ -1,0 +1,20 @@
+[Unit]
+Description=Cowrie SSH honeypot
+After=network.target
+
+[Service]
+Type=forking
+User=cowrie
+Group=cowrie
+WorkingDirectory=/opt/cowrie
+# venv bin must be on PATH so `cowrie start` can find `twistd`/`authbind`.
+Environment=PATH=/opt/cowrie/cowrie-env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# authbind is auto-enabled by `cowrie start` when /etc/authbind/byport/22 exists.
+ExecStart=/opt/cowrie/cowrie-env/bin/cowrie start
+ExecStop=/opt/cowrie/cowrie-env/bin/cowrie stop
+PIDFile=/opt/cowrie/var/run/cowrie.pid
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

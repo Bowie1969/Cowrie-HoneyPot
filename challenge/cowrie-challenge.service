@@ -1,0 +1,19 @@
+[Unit]
+Description=Cowrie SSH honeypot - challenge instance (flag hunt)
+After=network.target
+
+[Service]
+Type=forking
+User=cowrie
+Group=cowrie
+WorkingDirectory=/opt/challenge
+# Reuses the venv from the blackhat instance (/opt/cowrie/cowrie-env).
+Environment=PATH=/opt/cowrie/cowrie-env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=/opt/cowrie/cowrie-env/bin/cowrie start
+ExecStop=/opt/cowrie/cowrie-env/bin/cowrie stop
+PIDFile=/opt/challenge/var/run/cowrie.pid
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
