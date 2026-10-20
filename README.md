@@ -125,6 +125,56 @@ python3 live.py --no-color         # plain text for piping/logging
 
 `live.py` prints a running summary on exit (event counts, unique IPs, top talkers).
 
+## flowsint — full malware-analysis pipeline
+
+`flowsint.py` (and the `flowsint/` package) turns a `cowrie.json` log plus the
+`downloads/` directory into an **enriched threat graph** by chaining five
+stages, each of which drops a standalone artefact in `--out-dir`:
+
+```
+cowrie.json  ─► extract.py  ─► entities.json      sessions, ips, urls, hashes, creds
+                 │
+                 ▼
+             osint.py     ─► enrichment.json    whois+ASN · GreyNoise · AbuseIPDB
+                 │                              · VirusTotal (IP/URL/hash) · Shodan
+                 ▼
+             binary.py    ─► binaries.json      ELF hdr · strings · embedded IPs/URLs/
+                 │                              domains · Mirai/Gafgyt markers · UPX
+                 │                              · r2pipe (imports, functions, sections)
+                 ▼
+             graph.py     ─► graph.json         nodes: ip|session|url|hash|binary|
+                                                asn|country|cred|campaign|c2|tag
+                                                edges: connected_from, downloaded,
+                                                yielded, analysed_as, beacons_to,
+                                                belongs_to, matches_family, tagged
+                 │
+                 ▼
+             report.py    ─► binary_report.md   human-readable per-binary RE report
+                             summary.md         pipeline-wide summary
+                             graph.html         self-contained D3 viewer
+```
+
+```bash
+# Full run (set whichever API keys you have; everything is optional):
+export ABUSEIPDB_API_KEY=... VT_API_KEY=... SHODAN_API_KEY=...
+python3 flowsint.py cowrie.json \
+    --downloads-dir /opt/cowrie/var/lib/cowrie/downloads \
+    --out-dir flowsint-out \
+    --max-ips 50 --sources whois,greynoise,abuseipdb,virustotal,shodan
+
+# OSINT off, binary-only (useful for a quick RE pass):
+python3 flowsint.py cowrie.json \
+    --downloads-dir /opt/cowrie/var/lib/cowrie/downloads \
+    --out-dir flowsint-out --skip-osint
+
+# Open the viewer:
+xdg-open flowsint-out/graph.html    # or scp it down and open locally
+```
+
+OSINT responses are cached in `.flowsint-cache/` so re-runs cost no API quota.
+`radare2` / `rizin` is auto-detected; without it, flowsint still produces a
+full triage from stdlib (ELF header, strings, embedded IOCs, family markers).
+
 ## Challenge instance (port 2222)
 
 A second Cowrie on the same droplet for invited researchers: a **flag hunt where stealth is
@@ -165,6 +215,7 @@ lab range. Observing the attack once lets me reproduce it safely, forever.
 | `augment_fs.py` | Injects the decoy filesystem (`custom.pickle`) |
 | `setup.sh` / `cowrie.service` | Droplet provisioning + systemd unit (auto-restart) |
 | `analyze.py` / `live.py` | Threat-report + live-tail analysis pipeline |
+| `flowsint.py` / `flowsint/` | Full malware-analysis pipeline: extract → OSINT → binary RE → graph |
 | `challenge/` | Flag-hunt instance: config, decoy FS, scorer, systemd unit |
 
 ## Authorized use

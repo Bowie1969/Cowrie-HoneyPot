@@ -18,6 +18,8 @@ log/
 
 # Generated output
 leaderboard.md
+.flowsint-cache/
+flowsint-out/
 
 # OS / editor noise
 .DS_Store
